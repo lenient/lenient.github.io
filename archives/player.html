@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Player</title>
+  </head>
+  <body>
+    <video id="player" controls loop></video>
+    <div>
+      <div>
+        <label for="startTime">Start Time:</label>
+        <input id="startTime" placeholder="in seconds, mm:ss" /> <button id="playFrom">Play</button>
+      </div>
+      <div>
+        <label for="endTime">End Time:</label>
+        <input id="endTime" placeholder="in seconds, mm:ss" /> <button id="play">Play</button>
+        <label for="loop">Loop:</label> <input type="number" id="loop" placeholder="integer" />
+      </div>
+      <input id="videoInput" type="file" />
+    </div>
+    <script>
+      (() => {
+        const e = document.querySelector('#player');
+        let t = 0,
+          r = 0;
+        const n = e => {
+            const t = /(\d{2}):(\d{2})/;
+            let r = document.querySelector(e).value;
+            return (
+              t.test(r)
+                ? (r = (e => {
+                    let r = 0,
+                      n = t.exec(e);
+                    return (r = 60 * Number(n[1]) + Number(n[2])), r;
+                  })(r))
+                : isNaN(r) && (r = 0),
+              (r = Number(r)),
+              r
+            );
+          },
+          o = () => {
+            t = n('#startTime');
+          },
+          l = t => {
+            t.type.startsWith('video')
+              ? e.setAttribute('src', URL.createObjectURL(t))
+              : alert('Please put video like mp4');
+          };
+        document.querySelector('#play').addEventListener('click', l => {
+          o(), (r = n('#endTime'));
+          const c = 1e3 * (r - t + 1);
+          let u = Number(document.querySelector('#loop').value) || 1;
+          console.log('interval: ', c);
+          const a = () => {
+            console.log('loopTime: ', u),
+              (e.currentTime = t),
+              e.play(),
+              setTimeout(() => {
+                u <= 1 ? e.pause() : (u--, a());
+              }, c);
+          };
+          r > 0 && a();
+        }),
+          document.querySelector('#playFrom').addEventListener('click', r => {
+            o(), (e.currentTime = t), e.play();
+          }),
+          window.addEventListener('dragover', e => {
+            e.preventDefault();
+          }),
+          window.addEventListener('drop', e => {
+            e.preventDefault();
+            const t = e.dataTransfer.files[0];
+            l(t);
+          }),
+          document.querySelector('#videoInput').addEventListener('change', e => {
+            const t = e.target.files[0];
+            l(t);
+          });
+      })();
+    </script>
+  </body>
+</html>
