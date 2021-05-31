@@ -9,7 +9,6 @@ body {
 
 .word {
   position: relative;
-  left: 32px;
   top: -150px;
   font-size: 22px;
 }
@@ -27,7 +26,7 @@ body {
 
 .bdayCake {
   position: relative;
-  left: -100px;
+  left: -120px;
   top: 100px;
 }
 
