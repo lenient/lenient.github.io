@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>魔镜</title>
+
+    <style>
+      body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      div {
+        margin-bottom: 1rem;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div>魔镜~魔镜~谁是这个世界上最可爱的人？</div>
+    <button>点我看世界上最可爱的人</button>
+    <video autoplay />
+
+    <script>
+      const btn = document.querySelector('button');
+      btn.addEventListener('click', () => {
+        btn.style.display = 'none';
+        navigator.mediaDevices
+          .getUserMedia({
+            audio: false,
+            video: {
+              width: 320,
+              height: 480,
+            },
+          })
+          .then(stream => {
+            let video = document.querySelector('video');
+            video.srcObject = stream;
+          });
+      });
+    </script>
+  </body>
+</html>
